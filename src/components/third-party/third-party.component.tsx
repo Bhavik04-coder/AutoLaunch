@@ -10,7 +10,6 @@ const PLATFORMS = [
   { id: 'linkedin',  name: 'LinkedIn',    subtitle: 'Page or Profile',              color: '#0077b5', hasWatch: true,  provider: 'linkedin'  },
   { id: 'instagram', name: 'Instagram',   subtitle: 'Business or Creator accounts', color: '#e4405f', hasWatch: true,  provider: 'instagram' },
   { id: 'facebook',  name: 'Facebook',    subtitle: 'Page',                         color: '#1877f2', hasWatch: true,  provider: 'facebook'  },
-  { id: 'tiktok',    name: 'TikTok',      subtitle: 'Creator or Business account',  color: '#010101', hasWatch: false, provider: 'tiktok'    },
   { id: 'youtube',   name: 'YouTube',     subtitle: 'Channel',                      color: '#ff0000', hasWatch: true,  provider: 'youtube'   },
 ];
 
@@ -50,7 +49,6 @@ const PLATFORM_SVG: Record<string, React.ReactNode> = {
   facebook:  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
   linkedin:  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>,
   google:    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>,
-  tiktok:    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>,
   pinterest: <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>,
   twitter:   <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
   youtube:   <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
@@ -178,6 +176,12 @@ function SocialPlatformsTab() {
 }
 
 /* ── Brand Details ────────────────────────────────────────────────────────── */
+type CaptionResult = {
+  linkedin:  { content: string; metadata: { readabilityScore: number; engagementPotential: number } };
+  twitter:   { tweet:   string; metadata: { readabilityScore: number; engagementPotential: number } };
+  instagram: { caption: string; metadata: { readabilityScore: number; engagementPotential: number } };
+};
+
 function BrandDetailsTab() {
   const [brandName,  setBrandName]  = useState('AutoLaunch');
   const [website,    setWebsite]    = useState('https://autolaunch.io');
@@ -190,11 +194,69 @@ function BrandDetailsTab() {
   const [saved,      setSaved]      = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  // Caption generator state
+  const [cgModel,       setCgModel]       = useState<'gemini' | 'llama'>('gemini');
+  const [cgGoal,        setCgGoal]        = useState('Awareness');
+  const [cgFeature,     setCgFeature]     = useState('');
+  const [cgLoading,     setCgLoading]     = useState(false);
+  const [cgError,       setCgError]       = useState('');
+  const [cgResult,      setCgResult]      = useState<CaptionResult | null>(null);
+  const [cgActiveTab,   setCgActiveTab]   = useState<'linkedin' | 'twitter' | 'instagram'>('linkedin');
+  const [copied,        setCopied]        = useState('');
+  const [scheduleModal, setScheduleModal] = useState(false);
+  const [scheduleDate,  setScheduleDate]  = useState('');
+  const [scheduleTime,  setScheduleTime]  = useState('');
+  const [scheduled,     setScheduled]     = useState(false);
+
+  const handleGenerate = async () => {
+    setCgLoading(true);
+    setCgError('');
+    setCgResult(null);
+    try {
+      const res = await fetch('/api/caption-generator', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ brandName, tagline, voice, industry, goal: cgGoal, featureNote: cgFeature, model: cgModel }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Generation failed');
+      setCgResult(data as CaptionResult);
+    } catch (e: unknown) {
+      setCgError(e instanceof Error ? e.message : 'Something went wrong');
+    } finally {
+      setCgLoading(false);
+    }
+  };
+
+  const handleCopy = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(key);
+    setTimeout(() => setCopied(''), 2000);
+  };
+
+  const handleSchedule = async () => {
+    await new Promise((r) => setTimeout(r, 700));
+    setScheduled(true);
+    setTimeout(() => { setScheduled(false); setScheduleModal(false); }, 2500);
+  };
+
+  const activeContent = cgResult
+    ? cgActiveTab === 'linkedin'  ? cgResult.linkedin.content
+    : cgActiveTab === 'twitter'   ? cgResult.twitter.tweet
+    : cgResult.instagram.caption
+    : '';
+
   const save = async () => {
     await new Promise((r) => setTimeout(r, 600));
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
+
+  const PLATFORM_TABS = [
+    { key: 'linkedin'  as const, label: '🔵 LinkedIn',  icon: '🔵' },
+    { key: 'twitter'   as const, label: '🐦 Twitter/X', icon: '🐦' },
+    { key: 'instagram' as const, label: '📸 Instagram', icon: '📸' },
+  ];
 
   return (
     <div className={styles.tabContent}>
@@ -274,6 +336,216 @@ function BrandDetailsTab() {
       <button type="button" className={styles.saveBtn} onClick={save}>
         {saved ? '✓ Saved!' : 'Save Brand Details'}
       </button>
+
+      {/* ── AI Caption Generator ─────────────────────────────────────────── */}
+      <div className={styles.tabSection}>
+        <div className={styles.sectionHeader}>
+          <div>
+            <h3 className={styles.sectionTitle}>✨ AI Caption Generator</h3>
+            <p className={styles.sectionDesc}>Generate on-brand captions for LinkedIn, Twitter/X, and Instagram using your brand details above.</p>
+          </div>
+        </div>
+
+        <div className={styles.cgFeatureRow}>
+          <div className={styles.field} style={{ flex: 1 }}>
+            <label className={styles.label} htmlFor="cg-feature">New Release / Feature <span className={styles.cgOptional}>(optional)</span></label>
+            <textarea
+              id="cg-feature"
+              className={styles.textarea}
+              rows={2}
+              value={cgFeature}
+              onChange={(e) => setCgFeature(e.target.value)}
+              placeholder="e.g. We just launched AI-powered scheduling — it auto-picks the best time to post based on your audience activity..."
+            />
+          </div>
+        </div>
+
+        <div className={styles.cgModelToggle}>
+          <span className={styles.cgModelLabel}>Model</span>
+          <button
+            type="button"
+            className={`${styles.cgModelBtn} ${cgModel === 'gemini' ? styles.cgModelBtnActive : ''}`}
+            onClick={() => setCgModel('gemini')}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Gemini
+          </button>
+          <button
+            type="button"
+            className={`${styles.cgModelBtn} ${cgModel === 'llama' ? styles.cgModelBtnActive : ''}`}
+            onClick={() => setCgModel('llama')}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+            Llama 3.2
+          </button>
+        </div>
+
+        <div className={styles.cgControls}>
+          <div className={styles.field} style={{ flex: 1, maxWidth: 280 }}>
+            <label className={styles.label} htmlFor="cg-goal">Campaign Goal</label>
+            <select id="cg-goal" className={styles.select} value={cgGoal} onChange={(e) => setCgGoal(e.target.value)}>
+              {['Awareness', 'Signups', 'Traffic', 'Engagement', 'Sales', 'Retention'].map((g) => (
+                <option key={g}>{g}</option>
+              ))}
+            </select>
+          </div>
+          <button type="button" className={styles.generateBtn} onClick={handleGenerate} disabled={cgLoading}>
+            {cgLoading ? <><span className={styles.spinner} /> Generating...</> : '⚡ Generate Captions'}
+          </button>
+        </div>
+
+        {/* Brand context pill */}
+        <div className={styles.cgContext}>
+          <span className={styles.cgContextPill}>🏷️ {brandName}</span>
+          <span className={styles.cgContextPill}>🎙️ {voice}</span>
+          <span className={styles.cgContextPill}>🏭 {industry}</span>
+          <span className={styles.cgContextPill}>🎯 {cgGoal}</span>
+          <span className={`${styles.cgContextPill} ${styles.cgModelPill}`}>
+            {cgModel === 'gemini' ? '✦ Gemini' : '🦙 Llama 3.2'}
+          </span>
+        </div>
+
+        {cgError && <div className={styles.cgError}>⚠️ {cgError}</div>}
+
+        {cgLoading && (
+          <div className={styles.cgSkeleton}>
+            <div className={styles.cgSkeletonLine} style={{ width: '60%' }} />
+            <div className={styles.cgSkeletonLine} style={{ width: '90%' }} />
+            <div className={styles.cgSkeletonLine} style={{ width: '75%' }} />
+            <div className={styles.cgSkeletonLine} style={{ width: '50%' }} />
+          </div>
+        )}
+
+        {cgResult && !cgLoading && (
+          <div className={styles.cgOutput}>
+            {/* Platform tabs */}
+            <div className={styles.cgTabs}>
+              {PLATFORM_TABS.map((t) => (
+                <button key={t.key} type="button"
+                  className={`${styles.cgTab} ${cgActiveTab === t.key ? styles.cgTabActive : ''}`}
+                  onClick={() => setCgActiveTab(t.key)}>
+                  {t.label}
+                </button>
+              ))}
+            </div>
+
+            {/* LinkedIn */}
+            {cgActiveTab === 'linkedin' && (
+              <div className={styles.cgCard}>
+                <div className={styles.cgCardHeader}>
+                  <span className={styles.cgPlatformBadge} style={{ background: 'rgba(0,119,181,.12)', color: '#0077b5' }}>🔵 LinkedIn</span>
+                  <div className={styles.cgMeta}>
+                    <span className={styles.cgMetaPill}>📊 Readability {cgResult.linkedin.metadata?.readabilityScore ?? '—'}/10</span>
+                    <span className={styles.cgMetaPill}>🔥 Engagement {cgResult.linkedin.metadata?.engagementPotential ?? '—'}/10</span>
+                    <span className={styles.cgMetaPill}>📝 {cgResult.linkedin.content?.length ?? 0} chars</span>
+                  </div>
+                </div>
+                <pre className={styles.cgText}>{cgResult.linkedin.content ?? ''}</pre>
+                <div className={styles.cgCardActions}>
+                  <button type="button" className={styles.cgCopyBtn}
+                    onClick={() => handleCopy(cgResult.linkedin.content ?? '', 'linkedin')}>
+                    {copied === 'linkedin' ? '✓ Copied!' : '📋 Copy'}
+                  </button>
+                  <button type="button" className={styles.cgScheduleBtn} onClick={() => setScheduleModal(true)}>
+                    📅 Create Post &amp; Schedule
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Twitter */}
+            {cgActiveTab === 'twitter' && (
+              <div className={styles.cgCard}>
+                <div className={styles.cgCardHeader}>
+                  <span className={styles.cgPlatformBadge} style={{ background: 'rgba(0,0,0,.08)', color: 'rgb(var(--new-textColor))' }}>🐦 Twitter / X</span>
+                  <div className={styles.cgMeta}>
+                    <span className={styles.cgMetaPill}>📊 Readability {cgResult.twitter.metadata?.readabilityScore ?? '—'}/10</span>
+                    <span className={styles.cgMetaPill}>🔥 Engagement {cgResult.twitter.metadata?.engagementPotential ?? '—'}/10</span>
+                    <span className={`${styles.cgMetaPill} ${(cgResult.twitter.tweet?.length ?? 0) > 280 ? styles.cgMetaWarn : ''}`}>
+                      📝 {cgResult.twitter.tweet?.length ?? 0}/280
+                    </span>
+                  </div>
+                </div>
+                <pre className={styles.cgText}>{cgResult.twitter.tweet ?? ''}</pre>
+                <div className={styles.cgCardActions}>
+                  <button type="button" className={styles.cgCopyBtn}
+                    onClick={() => handleCopy(cgResult.twitter.tweet ?? '', 'twitter')}>
+                    {copied === 'twitter' ? '✓ Copied!' : '📋 Copy'}
+                  </button>
+                  <button type="button" className={styles.cgScheduleBtn} onClick={() => setScheduleModal(true)}>
+                    📅 Create Post &amp; Schedule
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Instagram */}
+            {cgActiveTab === 'instagram' && (
+              <div className={styles.cgCard}>
+                <div className={styles.cgCardHeader}>
+                  <span className={styles.cgPlatformBadge} style={{ background: 'rgba(228,64,95,.1)', color: '#e4405f' }}>📸 Instagram</span>
+                  <div className={styles.cgMeta}>
+                    <span className={styles.cgMetaPill}>📊 Readability {cgResult.instagram.metadata?.readabilityScore ?? '—'}/10</span>
+                    <span className={styles.cgMetaPill}>🔥 Engagement {cgResult.instagram.metadata?.engagementPotential ?? '—'}/10</span>
+                  </div>
+                </div>
+                <pre className={styles.cgText}>{cgResult.instagram.caption ?? ''}</pre>
+                <div className={styles.cgCardActions}>
+                  <button type="button" className={styles.cgCopyBtn}
+                    onClick={() => handleCopy(cgResult.instagram.caption ?? '', 'instagram')}>
+                    {copied === 'instagram' ? '✓ Copied!' : '📋 Copy'}
+                  </button>
+                  <button type="button" className={styles.cgScheduleBtn} onClick={() => setScheduleModal(true)}>
+                    📅 Create Post &amp; Schedule
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* ── Schedule Modal ───────────────────────────────────────────────── */}
+      {scheduleModal && (
+        <div className={styles.cgModalOverlay} onClick={() => setScheduleModal(false)}>
+          <div className={styles.cgModal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.cgModalHeader}>
+              <h4 className={styles.cgModalTitle}>📅 Schedule Post</h4>
+              <button type="button" className={styles.cgModalClose} onClick={() => setScheduleModal(false)}>✕</button>
+            </div>
+
+            <div className={styles.cgModalPlatform}>
+              {cgActiveTab === 'linkedin'  && <span style={{ color: '#0077b5' }}>🔵 LinkedIn</span>}
+              {cgActiveTab === 'twitter'   && <span>🐦 Twitter / X</span>}
+              {cgActiveTab === 'instagram' && <span style={{ color: '#e4405f' }}>📸 Instagram</span>}
+            </div>
+
+            <pre className={styles.cgModalPreview}>{activeContent.slice(0, 200)}{activeContent.length > 200 ? '…' : ''}</pre>
+
+            <div className={styles.cgModalFields}>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="sch-date">Date</label>
+                <input id="sch-date" type="date" className={styles.input} value={scheduleDate}
+                  onChange={(e) => setScheduleDate(e.target.value)} min={new Date().toISOString().split('T')[0]} />
+              </div>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="sch-time">Time</label>
+                <input id="sch-time" type="time" className={styles.input} value={scheduleTime}
+                  onChange={(e) => setScheduleTime(e.target.value)} />
+              </div>
+            </div>
+
+            <div className={styles.cgModalActions}>
+              <button type="button" className={styles.cancelBtn} onClick={() => setScheduleModal(false)}>Cancel</button>
+              <button type="button" className={styles.saveBtn} onClick={handleSchedule}
+                disabled={!scheduleDate || !scheduleTime || scheduled}>
+                {scheduled ? '✓ Scheduled!' : '📅 Confirm Schedule'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

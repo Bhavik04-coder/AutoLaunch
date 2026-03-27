@@ -202,7 +202,6 @@ export default function HomePage() {
             { label: 'in LinkedIn', href: '/third-party' },
             { label: '📷 Instagram', href: '/third-party' },
             { label: 'f Facebook', href: '/third-party' },
-            { label: '♪ TikTok', href: '/third-party' },
           ]} />
           <NavDropdown label="Resources" items={[
             { label: '🔌 Plugins', href: '/plugs' },
@@ -275,7 +274,6 @@ export default function HomePage() {
             <div className={styles.socialIcon} data-social="twitch">📺</div>
             <div className={styles.socialIcon} data-social="telegram">✈️</div>
             <div className={styles.socialIcon} data-social="whatsapp">💬</div>
-            <div className={styles.socialIcon} data-social="tiktok">📱</div>
           </div>
 
           <button className={styles.ctaButton} onClick={() => router.push('/auth/login')}>

@@ -85,28 +85,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     },
 
-    // ── TikTok ────────────────────────────────────────────────────────────
-    {
-      id: 'tiktok',
-      name: 'TikTok',
-      type: 'oauth',
-      authorization: {
-        url: 'https://www.tiktok.com/v2/auth/authorize',
-        params: { scope: 'user.info.basic,video.publish', response_type: 'code' },
-      },
-      token: {
-        url: 'https://open.tiktokapis.com/v2/oauth/token/',
-        params: { grant_type: 'authorization_code' },
-      },
-      userinfo: 'https://open.tiktokapis.com/v2/user/info/?fields=open_id,display_name,avatar_url',
-      clientId: process.env.AUTH_TIKTOK_ID!,
-      clientSecret: process.env.AUTH_TIKTOK_SECRET!,
-      profile(profile: any) {
-        const u = profile.data?.user ?? profile;
-        return { id: u.open_id ?? u.id, name: u.display_name ?? u.name, email: null, image: u.avatar_url ?? null };
-      },
-    },
-
     // ── YouTube (separate entry — same Google app, different scope label) ─
     {
       id: 'youtube',

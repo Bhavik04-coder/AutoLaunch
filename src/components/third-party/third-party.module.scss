@@ -288,3 +288,165 @@
   from { opacity: 0; translate: -50% 10px; }
   to   { opacity: 1; translate: -50% 0; }
 }
+
+/* ── AI Caption Generator ───────────────────────────────────────────────── */
+.cgControls {
+  display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap;
+}
+
+.cgContext {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.cgContextPill {
+  padding: 4px 12px; background: var(--new-bgColor); border: 1px solid var(--new-table-border);
+  border-radius: 20px; font-size: 12px; color: var(--new-textItemBlur);
+}
+
+.cgError {
+  padding: 12px 16px; background: rgba(249,112,102,.08); border: 1px solid rgba(249,112,102,.25);
+  border-radius: 10px; color: #f97066; font-size: 13px;
+}
+
+.cgSkeleton {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 20px; background: var(--new-bgColor); border: 1px solid var(--new-table-border);
+  border-radius: 12px;
+}
+.cgSkeletonLine {
+  height: 14px; background: var(--new-bgLineColor); border-radius: 6px;
+  animation: cgPulse 1.4s ease-in-out infinite;
+}
+@keyframes cgPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .4; }
+}
+
+.cgOutput { display: flex; flex-direction: column; gap: 0; }
+
+.cgTabs {
+  display: flex; gap: 0; border-bottom: 1px solid var(--new-bgLineColor); margin-bottom: 0;
+}
+.cgTab {
+  padding: 9px 18px; font-size: 13px; font-weight: 500; color: var(--new-textItemBlur);
+  background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer;
+  white-space: nowrap; transition: color .15s, border-color .15s;
+  &:hover { color: rgb(var(--new-textColor)); }
+}
+.cgTabActive { color: var(--new-btn-primary); border-bottom-color: var(--new-btn-primary); font-weight: 600; }
+
+.cgCard {
+  background: var(--new-bgColor); border: 1px solid var(--new-table-border);
+  border-top: none; border-radius: 0 0 12px 12px;
+  padding: 20px; display: flex; flex-direction: column; gap: 14px;
+}
+
+.cgCardHeader {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.cgPlatformBadge {
+  padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+}
+.cgMeta { display: flex; gap: 8px; flex-wrap: wrap; }
+.cgMetaPill {
+  padding: 3px 10px; background: var(--new-bgColorInner); border: 1px solid var(--new-table-border);
+  border-radius: 20px; font-size: 11px; color: var(--new-textItemBlur);
+}
+.cgMetaWarn { border-color: rgba(249,112,102,.4); color: #f97066; }
+
+.cgText {
+  white-space: pre-wrap; word-break: break-word; font-family: inherit;
+  font-size: 14px; line-height: 1.65; color: rgb(var(--new-textColor));
+  background: var(--new-bgColorInner); border: 1px solid var(--new-bgLineColor);
+  border-radius: 10px; padding: 16px; margin: 0; max-height: 340px; overflow-y: auto;
+}
+
+.cgCopyBtn {
+  align-self: flex-end; padding: 7px 18px; background: transparent;
+  color: var(--new-btn-primary); border: 1px solid rgba(99,102,241,.35);
+  border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: background .15s;
+  &:hover { background: rgba(99,102,241,.08); }
+}
+
+/* ── Caption Generator additions ────────────────────────────────────────── */
+.cgFeatureRow { display: flex; flex-direction: column; gap: 0; }
+.cgOptional   { font-weight: 400; color: var(--new-textItemBlur); font-size: 12px; }
+
+.cgCardActions {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+
+.cgScheduleBtn {
+  padding: 7px 18px; background: var(--new-btn-primary); color: white; border: none;
+  border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background .2s; display: flex; align-items: center; gap: 6px;
+  &:hover { background: #7236f1; }
+}
+
+/* ── Schedule Modal ─────────────────────────────────────────────────────── */
+.cgModalOverlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  animation: cgFadeIn .2s ease;
+}
+@keyframes cgFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.cgModal {
+  background: var(--new-bgColor); border: 1px solid var(--new-table-border);
+  border-radius: 16px; padding: 28px; width: 100%; max-width: 480px;
+  display: flex; flex-direction: column; gap: 18px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.35);
+  animation: cgSlideUp .2s ease;
+}
+@keyframes cgSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cgModalHeader {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cgModalTitle  { font-size: 16px; font-weight: 700; color: rgb(var(--new-textColor)); margin: 0; }
+.cgModalClose  {
+  width: 28px; height: 28px; background: var(--new-bgColorInner); border: 1px solid var(--new-table-border);
+  border-radius: 8px; color: var(--new-textItemBlur); font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  &:hover { color: rgb(var(--new-textColor)); }
+}
+.cgModalPlatform {
+  font-size: 13px; font-weight: 600; color: rgb(var(--new-textColor));
+}
+.cgModalPreview {
+  white-space: pre-wrap; word-break: break-word; font-family: inherit;
+  font-size: 13px; line-height: 1.6; color: var(--new-textItemBlur);
+  background: var(--new-bgColorInner); border: 1px solid var(--new-bgLineColor);
+  border-radius: 10px; padding: 14px; margin: 0; max-height: 120px; overflow-y: auto;
+}
+.cgModalFields  { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cgModalActions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ── Model Toggle ───────────────────────────────────────────────────────── */
+.cgModelToggle {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px; background: var(--new-bgColor); border: 1px solid var(--new-table-border);
+  border-radius: 10px; width: fit-content;
+}
+.cgModelLabel {
+  font-size: 12px; font-weight: 600; color: var(--new-textItemBlur);
+  padding: 0 8px; white-space: nowrap;
+}
+.cgModelBtn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; background: transparent; color: var(--new-textItemBlur);
+  border: none; border-radius: 7px; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+  &:hover { color: rgb(var(--new-textColor)); background: var(--new-bgColorInner); }
+}
+.cgModelBtnActive {
+  background: var(--new-btn-primary); color: white;
+  &:hover { background: var(--new-btn-primary); color: white; }
+}
+.cgModelPill {
+  background: rgba(99,102,241,.1); border-color: rgba(99,102,241,.25);
+  color: var(--new-btn-primary); font-weight: 600;
+}

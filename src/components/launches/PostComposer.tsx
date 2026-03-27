@@ -26,7 +26,6 @@ const PLATFORMS = [
   { id: 'linkedin', name: 'LinkedIn', icon: 'in', color: '#0077b5' },
   { id: 'facebook', name: 'Facebook', icon: 'f', color: '#1877f2' },
   { id: 'instagram', name: 'Instagram', icon: '📷', color: '#e4405f' },
-  { id: 'tiktok', name: 'TikTok', icon: '♪', color: '#000' },
   { id: 'youtube', name: 'YouTube', icon: '▶', color: '#ff0000' },
 ];
 
