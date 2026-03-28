@@ -56,6 +56,7 @@ export interface Post {
   hashtags?: string[];
   timezone?: string;
   createdAt?: string;
+  linkedInQueued?: boolean;  // true = auto-post to LinkedIn when scheduledAt arrives
 }
 
 export interface CreatePostPayload {

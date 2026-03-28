@@ -59,9 +59,9 @@
   }
 
   &.popular {
-    border-color: var(--new-btn-primary);
+    border-color: #f97316;
     border-width: 2px;
-    background: rgba(98,43,211,0.04);
+    background: rgba(249,115,22,0.04);
   }
 
   &.current {
@@ -76,13 +76,13 @@
   left: 50%;
   transform: translateX(-50%);
   padding: 4px 16px;
-  background: linear-gradient(135deg, var(--new-btn-primary), #8b5cf6);
+  background: linear-gradient(135deg, #f97316, #fb923c);
   color: white;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(98,43,211,0.4);
+  box-shadow: 0 4px 12px rgba(249,115,22,0.4);
 }
 
 .currentBadge {
@@ -114,8 +114,8 @@
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 20px;
-  background: rgba(98,43,211,0.12);
-  color: #a78bfa;
+  background: rgba(249,115,22,0.12);
+  color: #fb923c;
 }
 
 
@@ -144,7 +144,7 @@
 
 .upgradeBtn {
   padding: 13px;
-  background: var(--new-btn-primary);
+  background: #f97316;
   color: white;
   border: none;
   border-radius: 12px;
@@ -154,7 +154,7 @@
   transition: all 0.2s;
   margin-top: auto;
 
-  &:hover:not(:disabled) { background: #7236f1; transform: translateY(-1px); }
+  &:hover:not(:disabled) { background: #ea6c0a; transform: translateY(-1px); }
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 

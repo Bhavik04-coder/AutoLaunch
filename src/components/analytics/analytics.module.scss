@@ -1,9 +1,19 @@
+$orange: #FF6B35;
+$orange2: #e85a2a;
+$dark: #111111;
+$gray: #6b7280;
+$lightGray: #9ca3af;
+$border: #e5e7eb;
+$bg: #f9fafb;
+$bgInner: #f3f4f6;
+$white: #ffffff;
+
 .page {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--new-bgColorInner);
+  background: $bg;
 }
 
 .toolbar {
@@ -11,10 +21,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
-  border-bottom: 1px solid var(--new-bgLineColor);
+  border-bottom: 1px solid $border;
   flex-shrink: 0;
   gap: 12px;
   flex-wrap: wrap;
+  background: $white;
 }
 
 .toolbarLeft {
@@ -26,32 +37,34 @@
 .pageTitle {
   font-size: 18px;
   font-weight: 700;
-  color: rgb(var(--new-textColor));
+  color: $dark;
 }
 
 .rangeSelector {
   display: flex;
-  background: var(--new-bgColor);
+  background: $bg;
   border-radius: 8px;
   padding: 4px;
   gap: 2px;
+  border: 1px solid $border;
 
   button {
     padding: 7px 16px;
     border-radius: 6px;
     border: none;
     background: transparent;
-    color: var(--new-textItemBlur);
+    color: $gray;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    font-family: inherit;
 
-    &:hover { color: rgb(var(--new-textColor)); }
+    &:hover { color: $dark; }
     &.active {
-      background: var(--new-bgColorInner);
-      color: rgb(var(--new-textColor));
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      background: $white;
+      color: $dark;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
   }
 }
@@ -61,16 +74,17 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: var(--new-btn-simple);
-  border: 1px solid var(--new-table-border);
+  background: $white;
+  border: 1px solid $border;
   border-radius: 8px;
-  color: rgb(var(--new-textColor));
+  color: $dark;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  font-family: inherit;
 
-  &:hover { background: var(--new-box-hover); border-color: var(--new-sep); }
+  &:hover { background: $bg; border-color: $orange; color: $orange; }
 }
 
 .content {
@@ -90,8 +104,8 @@
 }
 
 .metricCard {
-  background: var(--new-bgColor);
-  border: 1px solid var(--new-table-border);
+  background: $white;
+  border: 1px solid $border;
   border-radius: 14px;
   padding: 20px;
   display: flex;
@@ -106,15 +120,15 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--new-btn-primary), #8b5cf6);
+    background: linear-gradient(90deg, $orange, $orange2);
     opacity: 0;
     transition: opacity 0.2s;
   }
 
   &:hover {
-    border-color: var(--new-sep);
+    border-color: rgba(255, 107, 53, 0.3);
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.1);
 
     &::before { opacity: 1; }
   }
@@ -128,7 +142,7 @@
 
 .metricLabel {
   font-size: 12px;
-  color: var(--new-textItemBlur);
+  color: $gray;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -138,7 +152,7 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgba(98,43,211,0.12);
+  background: rgba(255, 107, 53, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,7 +162,7 @@
 .metricValue {
   font-size: 30px;
   font-weight: 700;
-  color: rgb(var(--new-textColor));
+  color: $dark;
   line-height: 1;
 }
 
@@ -165,19 +179,19 @@
   align-items: center;
   gap: 3px;
 
-  &.up { color: #32d583; }
-  &.down { color: #f97066; }
+  &.up { color: #16a34a; }
+  &.down { color: #ef4444; }
 }
 
 .metricPeriod {
   font-size: 12px;
-  color: var(--new-textItemBlur);
+  color: $lightGray;
 }
 
 /* Chart */
 .chartCard {
-  background: var(--new-bgColor);
-  border: 1px solid var(--new-table-border);
+  background: $white;
+  border: 1px solid $border;
   border-radius: 14px;
   padding: 24px;
 }
@@ -192,7 +206,7 @@
 .chartTitle {
   font-size: 15px;
   font-weight: 600;
-  color: rgb(var(--new-textColor));
+  color: $dark;
 }
 
 .chartLegend {
@@ -205,7 +219,7 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: var(--new-textItemBlur);
+  color: $gray;
 }
 
 .legendDot {
@@ -240,21 +254,21 @@
 
 .bar {
   width: 100%;
-  background: linear-gradient(180deg, #7236f1 0%, var(--new-btn-primary) 100%);
+  background: linear-gradient(180deg, $orange 0%, $orange2 100%);
   border-radius: 6px 6px 0 0;
   transition: all 0.3s ease;
   min-height: 4px;
   position: relative;
 
   &:hover {
-    background: linear-gradient(180deg, #8b5cf6 0%, #7236f1 100%);
-    filter: brightness(1.15);
+    background: linear-gradient(180deg, #ff8255 0%, $orange 100%);
+    filter: brightness(1.08);
   }
 }
 
 .barLabel {
   font-size: 11px;
-  color: var(--new-textItemBlur);
+  color: $lightGray;
   font-weight: 500;
 }
 
@@ -270,8 +284,8 @@
 }
 
 .platformsCard, .topPostsCard {
-  background: var(--new-bgColor);
-  border: 1px solid var(--new-table-border);
+  background: $white;
+  border: 1px solid $border;
   border-radius: 14px;
   padding: 20px;
 }
@@ -279,7 +293,7 @@
 .sectionTitle {
   font-size: 15px;
   font-weight: 600;
-  color: rgb(var(--new-textColor));
+  color: $dark;
   margin-bottom: 16px;
 }
 
@@ -292,9 +306,9 @@
     padding: 10px 14px;
     font-size: 11px;
     font-weight: 600;
-    color: var(--new-textItemBlur);
-    background: var(--new-table-header);
-    border-bottom: 1px solid var(--new-table-border);
+    color: $gray;
+    background: $bg;
+    border-bottom: 1px solid $border;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 
@@ -305,12 +319,12 @@
   td {
     padding: 12px 14px;
     font-size: 13px;
-    color: rgb(var(--new-textColor));
-    border-bottom: 1px solid var(--new-table-border);
+    color: $dark;
+    border-bottom: 1px solid $border;
   }
 
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--new-box-hover); }
+  tr:hover td { background: $bgInner; }
 }
 
 .platformName {
@@ -335,14 +349,14 @@
 .engagementTrack {
   flex: 1;
   height: 4px;
-  background: var(--new-bgLineColor);
+  background: $border;
   border-radius: 4px;
   overflow: hidden;
 }
 
 .engagementFill {
   height: 100%;
-  background: linear-gradient(90deg, var(--new-btn-primary), #8b5cf6);
+  background: linear-gradient(90deg, $orange, $orange2);
   border-radius: 4px;
 }
 
@@ -351,7 +365,7 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px 0;
-  border-bottom: 1px solid var(--new-table-border);
+  border-bottom: 1px solid $border;
 
   &:last-child { border-bottom: none; }
 }
@@ -360,8 +374,8 @@
   width: 24px;
   height: 24px;
   border-radius: 6px;
-  background: rgba(98,43,211,0.12);
-  color: var(--new-btn-primary);
+  background: rgba(255, 107, 53, 0.1);
+  color: $orange;
   font-size: 12px;
   font-weight: 700;
   display: flex;
@@ -370,13 +384,11 @@
   flex-shrink: 0;
 }
 
-.topPostContent {
-  flex: 1;
-}
+.topPostContent { flex: 1; }
 
 .topPostText {
   font-size: 13px;
-  color: rgb(var(--new-textColor));
+  color: $dark;
   line-height: 1.4;
   margin-bottom: 4px;
   display: -webkit-box;
@@ -387,7 +399,7 @@
 
 .topPostMeta {
   font-size: 11px;
-  color: var(--new-textItemBlur);
+  color: $lightGray;
 }
 
 // Bar height classes
