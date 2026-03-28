@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import styles from './launches.module.scss';
 import { CalendarComponent } from './calendar.component';
 import { NewPostModal } from './new.post.modal';
-import { PostsProvider, usePosts } from '@/contexts/PostsContext';
+import { PostsProvider, usePosts, Post } from '@/contexts/PostsContext';
+import { useLinkedInPost } from '@/hooks/useLinkedInPost';
 
 export function LaunchesComponent() {
   return (
@@ -61,7 +62,7 @@ function LaunchesInner() {
       {showNewPost && (
         <NewPostModal
           onClose={() => setShowNewPost(false)}
-          onPostCreated={addPost}
+          onPostCreated={(data) => addPost({ ...data, scheduledAt: data.scheduledAt || '' })}
         />
       )}
     </div>
@@ -120,24 +121,48 @@ function PostListView() {
 
   return (
     <div className={styles.listView}>
-      {sorted.map((post, index) => (
-        <React.Fragment key={post.id}>
-          <div className={styles.postCard}>
-            <div className={styles.postStatus} data-status={post.status} />
-            <div className={styles.postContent}>{post.content}</div>
-            <div className={styles.postMeta}>
-              <div className={styles.postPlatforms}>
-                {post.platforms.map((p) => (
-                  <span key={p} className={styles.platformTag}>{p}</span>
-                ))}
-              </div>
-              <div className={styles.postDate}>
-                {new Date(post.scheduledAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-              </div>
-            </div>
-          </div>
-        </React.Fragment>
+      {sorted.map((post) => (
+        <PostListCard key={post.id} post={post} />
       ))}
+    </div>
+  );
+}
+
+function PostListCard({ post }: { post: Post }) {
+  const { postToLinkedIn, isPosting, result, message } = useLinkedInPost();
+  const hasLinkedIn = post.platforms.some((p) => p.toLowerCase() === 'linkedin');
+
+  return (
+    <div className={styles.postCard}>
+      <div className={styles.postStatus} data-status={post.status} />
+      <div className={styles.postContent}>{post.content}</div>
+      <div className={styles.postMeta}>
+        <div className={styles.postPlatforms}>
+          {post.platforms.map((p) => (
+            <span key={p} className={styles.platformTag}>{p}</span>
+          ))}
+        </div>
+        <div className={styles.postDate}>
+          {new Date(post.scheduledAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+        </div>
+      </div>
+      {hasLinkedIn && (
+        <div className={styles.postActions}>
+          {message && (
+            <span className={result === 'success' ? styles.postSuccessMsg : styles.postErrorMsg}>
+              {result === 'success' ? '✅' : '⚠️'} {message}
+            </span>
+          )}
+          <button
+            type="button"
+            className={styles.postLinkedInBtn}
+            onClick={() => postToLinkedIn(post.content)}
+            disabled={isPosting || result === 'success'}
+          >
+            {isPosting ? 'Posting...' : result === 'success' ? '✓ Posted!' : '🚀 Post to LinkedIn'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

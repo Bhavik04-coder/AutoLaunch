@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Twitter from 'next-auth/providers/twitter';
-import LinkedIn from 'next-auth/providers/linkedin';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: process.env.AUTH_SECRET,
@@ -24,21 +23,44 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.AUTH_TWITTER_SECRET!,
     }),
 
-    // ── LinkedIn (built-in provider — most reliable with NextAuth v5) ─────
+    // ── LinkedIn (OIDC + w_member_social for posting) ─────────────────────
     // Portal: https://www.linkedin.com/developers/apps → Auth tab
     // Redirect URI: http://localhost:4200/api/auth/callback/linkedin
-    // Required products: "Sign In with LinkedIn using OpenID Connect"
-    // NOTE: w_member_social is a posting scope — NOT part of OIDC auth flow.
-    //       LinkedIn's OIDC only supports: openid, profile, email
-    LinkedIn({
-      clientId: process.env.AUTH_LINKEDIN_ID!,
-      clientSecret: process.env.AUTH_LINKEDIN_SECRET!,
+    // Products: "Sign In with LinkedIn using OpenID Connect" + "Share on LinkedIn"
+    {
+      id: 'linkedin',
+      name: 'LinkedIn',
+      type: 'oidc',
+      issuer: 'https://www.linkedin.com/oauth',
       authorization: {
+        url: 'https://www.linkedin.com/oauth/v2/authorization',
         params: {
-          scope: 'openid profile email',
+          scope: 'openid profile email w_member_social',
+          response_type: 'code',
         },
       },
-    }),
+      token: {
+        url: 'https://www.linkedin.com/oauth/v2/accessToken',
+      },
+      userinfo: {
+        url: 'https://api.linkedin.com/v2/userinfo',
+      },
+      jwks_endpoint: 'https://www.linkedin.com/oauth/openid/jwks',
+      client: {
+        token_endpoint_auth_method: 'client_secret_post',
+      },
+      clientId: process.env.AUTH_LINKEDIN_ID!,
+      clientSecret: process.env.AUTH_LINKEDIN_SECRET!,
+      checks: ['state'],
+      profile(profile: any) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email ?? null,
+          image: profile.picture ?? null,
+        };
+      },
+    },
 
     // ── Facebook ──────────────────────────────────────────────────────────
     {

@@ -49,8 +49,8 @@ export type PostStatus = 'draft' | 'scheduled' | 'published' | 'failed';
 export interface Post {
   id: string;
   content: string;
-  platforms: PlatformId[];
-  scheduledAt: string;
+  platforms: string[];
+  scheduledAt: string;       // always present — defaults to now if not scheduled
   status: PostStatus;
   mediaUrls?: string[];
   hashtags?: string[];
@@ -60,7 +60,7 @@ export interface Post {
 
 export interface CreatePostPayload {
   content: string;
-  platforms: PlatformId[];
+  platforms: string[];
   scheduledAt?: string;
   mediaUrls?: string[];
   hashtags?: string[];

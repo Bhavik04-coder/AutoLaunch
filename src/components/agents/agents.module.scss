@@ -375,3 +375,196 @@
 
   &:hover { background: rgba(255,255,255,0.25); }
 }
+
+// ── Visual Prompt Builder ────────────────────────────────────────────────────
+
+.promptBuilderWelcome {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(98,43,211,0.08), rgba(139,92,246,0.06));
+  border: 1px solid rgba(98,43,211,0.15);
+  border-radius: 12px;
+  align-self: flex-start;
+  max-width: 90%;
+}
+
+.promptBuilderWelcomeTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(var(--new-textColor));
+}
+
+.promptBuilderWelcomeDesc {
+  font-size: 13px;
+  color: var(--new-textItemBlur);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.promptStepBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  background: rgba(98,43,211,0.12);
+  color: var(--new-btn-primary);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  align-self: flex-start;
+  margin-bottom: 4px;
+}
+
+.promptQuestion {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(var(--new-textColor));
+  line-height: 1.5;
+  margin: 0;
+}
+
+.promptOutputCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  background: var(--new-bgColor);
+  border: 1px solid rgba(98,43,211,0.2);
+  border-radius: 14px;
+  align-self: flex-start;
+  max-width: 95%;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #612bd3, #8b5cf6, #d82d7e);
+  }
+}
+
+.promptSuccessHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #32d583;
+}
+
+.promptBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.promptLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--new-textItemBlur);
+}
+
+.promptLabelPositive { color: #32d583; }
+.promptLabelNegative { color: #f97066; }
+
+.promptText {
+  padding: 12px;
+  background: var(--new-bgColorInner);
+  border: 1px solid var(--new-table-border);
+  border-radius: 8px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: rgb(var(--new-textColor));
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 140px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.promptCopyBtn {
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid var(--new-table-border);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--new-textItemBlur);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: var(--new-btn-primary);
+    color: var(--new-btn-primary);
+  }
+}
+
+.promptCopied {
+  border-color: #32d583 !important;
+  color: #32d583 !important;
+}
+
+.promptActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.promptResetBtn {
+  flex: 1;
+  padding: 8px 14px;
+  background: var(--new-bgColorInner);
+  border: 1px solid var(--new-table-border);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--new-textItemBlur);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--new-box-hover);
+    color: rgb(var(--new-textColor));
+  }
+}
+
+.promptColorInput {
+  padding: 9px 12px;
+  background: var(--new-bgColorInner);
+  border: 1px solid var(--new-table-border);
+  border-radius: 8px;
+  color: rgb(var(--new-textColor));
+  font-size: 13px;
+  width: 100%;
+  margin-top: 4px;
+
+  &:focus { border-color: var(--new-btn-primary); outline: none; }
+  &::placeholder { color: var(--new-textItemBlur); }
+}
+
+.promptColorHint {
+  font-size: 11px;
+  color: var(--new-textItemBlur);
+  margin: 2px 0 0;
+}
+
+.promptAgentIcon {
+  font-size: 32px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #612bd3, #d82d7e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

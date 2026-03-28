@@ -243,7 +243,10 @@ export default function HomePage() {
             <br />
             media scheduling tool
             <svg className={styles.underline} viewBox="0 0 300 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 15 Q 150 5, 295 15" stroke="url(#gradient)" strokeWidth="3" fill="none" strokeLinecap="round"/>
+              <path d="M5 15 Q 150 5, 295 15" stroke="url(#gradient)" strokeWidth="3" fill="none" strokeLinecap="round"
+                strokeDasharray="300" strokeDashoffset="300"
+                style={{ animation: 'drawLinePath 1s ease-out 1.2s forwards' }}
+              />
               <defs>
                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#ec4899" />

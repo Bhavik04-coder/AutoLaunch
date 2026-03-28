@@ -1,6 +1,7 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
+import { useLinkedInPost } from '@/hooks/useLinkedInPost';
 import styles from './third-party.module.scss';
 
 const TABS = ['Social Platforms', 'Brand Details', 'Integrations', 'Uploads', 'Templates', 'Exports'];
@@ -193,6 +194,7 @@ type CaptionResult = {
 };
 
 function BrandDetailsTab() {
+  const { data: session } = useSession();
   const [brandName,  setBrandName]  = useState('AutoLaunch');
   const [website,    setWebsite]    = useState('https://autolaunch.io');
   const [industry,   setIndustry]   = useState('SaaS / Technology');
@@ -217,6 +219,34 @@ function BrandDetailsTab() {
   const [scheduleDate,  setScheduleDate]  = useState('');
   const [scheduleTime,  setScheduleTime]  = useState('');
   const [scheduled,     setScheduled]     = useState(false);
+
+  // Image upload for posts
+  const [cgImage,        setCgImage]        = useState<File | null>(null);
+  const [cgImagePreview, setCgImagePreview] = useState<string | null>(null);
+  const [cgDragging,     setCgDragging]     = useState(false);
+  const cgImageRef = useRef<HTMLInputElement>(null);
+
+  // LinkedIn posting via reusable hook
+  const { postToLinkedIn, isPosting: postingToLI, result: liPostResult, message: liPostMsg } = useLinkedInPost();
+
+  const handleImageSelect = (file: File | null) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) return;
+    if (file.size > 10 * 1024 * 1024) {
+      setCgError('Image must be under 10 MB.');
+      return;
+    }
+    setCgImage(file);
+    const reader = new FileReader();
+    reader.onload = (e) => setCgImagePreview(e.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const removeImage = () => {
+    setCgImage(null);
+    setCgImagePreview(null);
+    if (cgImageRef.current) cgImageRef.current.value = '';
+  };
 
   const handleGenerate = async () => {
     setCgLoading(true);
@@ -248,6 +278,15 @@ function BrandDetailsTab() {
     await new Promise((r) => setTimeout(r, 700));
     setScheduled(true);
     setTimeout(() => { setScheduled(false); setScheduleModal(false); }, 2500);
+  };
+
+  // ── Post to LinkedIn ──────────────────────────────────────────────────
+  const handlePostToLinkedIn = async () => {
+    const content = cgResult?.linkedin?.content;
+    if (!content) {
+      return; // button is disabled if no content anyway
+    }
+    await postToLinkedIn(content, cgImage);
   };
 
   const activeContent = cgResult
@@ -370,6 +409,47 @@ function BrandDetailsTab() {
           </div>
         </div>
 
+        {/* ── Image upload area ─────────────────────────────────────────── */}
+        <div className={styles.cgImageSection}>
+          <label className={styles.label}>Post Image <span className={styles.cgOptional}>(optional — will be attached to LinkedIn post)</span></label>
+          {cgImagePreview ? (
+            <div className={styles.cgImagePreviewWrap}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={cgImagePreview} alt="Upload preview" className={styles.cgImagePreview} />
+              <div className={styles.cgImageOverlay}>
+                <span className={styles.cgImageName}>📎 {cgImage?.name}</span>
+                <div className={styles.cgImageActions}>
+                  <button type="button" className={styles.cgImageChangeBtn} onClick={() => cgImageRef.current?.click()}>🔄 Change</button>
+                  <button type="button" className={styles.cgImageRemoveBtn} onClick={removeImage}>🗑 Remove</button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div
+              className={`${styles.cgImageDropZone} ${cgDragging ? styles.cgImageDropZoneActive : ''}`}
+              onClick={() => cgImageRef.current?.click()}
+              onDragOver={(e) => { e.preventDefault(); setCgDragging(true); }}
+              onDragLeave={() => setCgDragging(false)}
+              onDrop={(e) => { e.preventDefault(); setCgDragging(false); handleImageSelect(e.dataTransfer.files[0]); }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && cgImageRef.current?.click()}
+            >
+              <span className={styles.cgImageDropIcon}>🖼️</span>
+              <span className={styles.cgImageDropText}>Click or drag an image here</span>
+              <span className={styles.cgImageDropHint}>PNG, JPG, GIF · Max 10 MB</span>
+            </div>
+          )}
+          <input
+            ref={cgImageRef}
+            type="file"
+            accept="image/png,image/jpeg,image/gif,image/webp"
+            className={styles.hiddenInput}
+            aria-label="Upload post image"
+            onChange={(e) => handleImageSelect(e.target.files?.[0] ?? null)}
+          />
+        </div>
+
         <div className={styles.cgModelToggle}>
           <span className={styles.cgModelLabel}>Model</span>
           <button
@@ -450,6 +530,13 @@ function BrandDetailsTab() {
                     <span className={styles.cgMetaPill}>📝 {cgResult.linkedin.content?.length ?? 0} chars</span>
                   </div>
                 </div>
+                {cgImagePreview && (
+                  <div className={styles.cgCardImagePreview}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={cgImagePreview} alt="Attached" className={styles.cgCardImageThumb} />
+                    <span className={styles.cgCardImageLabel}>📎 Image attached — will be posted with caption</span>
+                  </div>
+                )}
                 <pre className={styles.cgText}>{cgResult.linkedin.content ?? ''}</pre>
                 <div className={styles.cgCardActions}>
                   <button type="button" className={styles.cgCopyBtn}
@@ -459,7 +546,23 @@ function BrandDetailsTab() {
                   <button type="button" className={styles.cgScheduleBtn} onClick={() => setScheduleModal(true)}>
                     📅 Create Post &amp; Schedule
                   </button>
+                  <button type="button" className={styles.cgPostNowBtn}
+                    onClick={handlePostToLinkedIn}
+                    disabled={postingToLI || liPostResult === 'success'}>
+                    {postingToLI
+                      ? <><span className={styles.spinner} /> Posting...</>
+                      : liPostResult === 'success'
+                        ? '✓ Posted!'
+                        : cgImage
+                          ? '🚀 Post with Image to LinkedIn'
+                          : '🚀 Post Now to LinkedIn'}
+                  </button>
                 </div>
+                {liPostMsg && (
+                  <div className={`${styles.cgPostFeedback} ${liPostResult === 'success' ? styles.cgPostSuccess : styles.cgPostError}`}>
+                    {liPostResult === 'success' ? '✅' : '⚠️'} {liPostMsg}
+                  </div>
+                )}
               </div>
             )}
 

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './global.scss';
-import './globals.css';
 import { VariableProvider } from '@/contexts/VariableContext';
 import { LayoutProvider } from '@/contexts/LayoutContext';
 import { SessionProvider } from 'next-auth/react';
@@ -24,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={plusJakartaSans.variable}>
-      <body className={`${plusJakartaSans.className} !bg-[var(--new-bgColor)] text-[var(--new-btn-text)]`}>
+      <body className={plusJakartaSans.className}>
         <VariableProvider>
           <LayoutProvider>
             <SessionProvider>

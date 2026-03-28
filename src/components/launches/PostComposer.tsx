@@ -6,6 +6,7 @@ import Button from '../ui/Button';
 import Card from '../ui/Card';
 import Modal from '../ui/Modal';
 import { useLayout } from '@/contexts/LayoutContext';
+import { useLinkedInPost } from '@/hooks/useLinkedInPost';
 import AIContentGenerator from './AIContentGenerator';
 
 interface PostComposerProps {
@@ -41,6 +42,12 @@ export default function PostComposer({ isOpen, onClose, onSubmit }: PostComposer
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
   const [error, setError] = useState('');
+
+  // LinkedIn posting via reusable hook
+  const {
+    postToLinkedIn, isPosting: postingToLI, result: liPostResult, message: liPostMsg,
+  } = useLinkedInPost();
+  const showLinkedInBtn = selectedPlatforms.includes('linkedin') && content.trim().length > 0;
 
   const togglePlatform = (platformId: string) => {
     setSelectedPlatforms((prev) =>
@@ -214,6 +221,15 @@ export default function PostComposer({ isOpen, onClose, onSubmit }: PostComposer
         {/* Actions */}
         <div className={styles.actions}>
           {error && <div className={styles.error}>{error}</div>}
+          {liPostMsg && (
+            <div className={styles.error} style={
+              liPostResult === 'success'
+                ? { background: 'rgba(34,197,94,0.1)', borderColor: 'rgba(34,197,94,0.3)', color: '#22c55e' }
+                : undefined
+            }>
+              {liPostResult === 'success' ? '✅' : '⚠️'} {liPostMsg}
+            </div>
+          )}
           <Button variant="ghost" onClick={handleClose} disabled={isSubmitting}>
             Cancel
           </Button>
@@ -232,6 +248,16 @@ export default function PostComposer({ isOpen, onClose, onSubmit }: PostComposer
           >
             ✨ AI Enhance
           </Button>
+          {showLinkedInBtn && (
+            <Button
+              variant="primary"
+              onClick={() => postToLinkedIn(content)}
+              isLoading={postingToLI}
+              disabled={postingToLI || liPostResult === 'success' || isSubmitting}
+            >
+              {liPostResult === 'success' ? '✓ Posted!' : '🚀 Post to LinkedIn'}
+            </Button>
+          )}
           <Button
             variant="primary"
             onClick={handleSubmit}
