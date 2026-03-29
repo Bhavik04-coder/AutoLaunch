@@ -32,8 +32,8 @@
 
 .summaryPill {
   padding: 3px 10px;
-  background: rgba(98,43,211,0.12);
-  color: #a78bfa;
+  background: rgba(249,115,22,0.12);
+  color: #fb923c;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
@@ -135,7 +135,7 @@
 
 .connectBtn {
   padding: 8px 18px;
-  background: var(--new-btn-primary);
+  background: #f97316;
   color: white;
   border: none;
   border-radius: 8px;
@@ -144,7 +144,7 @@
   cursor: pointer;
   transition: all 0.2s;
 
-  &:hover { background: #7236f1; }
+  &:hover { background: #ea6c0a; }
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 

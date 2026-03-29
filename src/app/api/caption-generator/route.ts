@@ -115,7 +115,21 @@ export async function POST(req: NextRequest) {
     const {
       brandName, tagline, voice, industry,
       goal = 'Awareness', featureNote = '', model = 'gemini',
+      prompt, platforms: reqPlatforms,
     } = await req.json();
+
+    // Simple rewrite mode — used by the Launches "Rewrite With AI" button
+    if (prompt) {
+      const platformStr = Array.isArray(reqPlatforms) && reqPlatforms.length
+        ? reqPlatforms.join(', ')
+        : 'social media';
+      const rewritePrompt = `Rewrite this social media caption to be more engaging and compelling for ${platformStr}. Keep the core message intact. Output ONLY a JSON object with a single key "caption".\n\nOriginal: "${prompt}"`;
+      const keys = getGeminiKeys();
+      const result = keys.length
+        ? await geminiGenerate(rewritePrompt)
+        : await ollamaGenerate(rewritePrompt);
+      return NextResponse.json({ caption: String(result.caption ?? prompt) });
+    }
 
     const featurePart = featureNote ? ` New release/feature: ${featureNote}.` : '';
     const description = `${brandName} — ${tagline}. Industry: ${industry}. Brand voice: ${voice}.${featurePart}`;

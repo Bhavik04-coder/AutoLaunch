@@ -88,7 +88,7 @@ export function AnalyticsComponent() {
             <h3 className={styles.chartTitle}>Impressions Over Time</h3>
             <div className={styles.chartLegend}>
               <div className={styles.legendItem}>
-                <div className={styles.legendDot} style={{ background: '#7236f1' }} />
+                <div className={styles.legendDot} style={{ background: '#FF6B35' }} />
                 Impressions
               </div>
             </div>

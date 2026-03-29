@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 interface UseLinkedInPostResult {
-  postToLinkedIn: (content: string, image?: File | null) => Promise<void>;
+  postToLinkedIn: (content: string, image?: File | null) => Promise<boolean>;
   isPosting: boolean;
   result: 'success' | 'error' | null;
   message: string;
@@ -42,12 +42,12 @@ export function useLinkedInPost(): UseLinkedInPostResult {
     setMessage('');
   };
 
-  const postToLinkedIn = async (content: string, image?: File | null) => {
+  const postToLinkedIn = async (content: string, image?: File | null): Promise<boolean> => {
     if (!content?.trim()) {
       setResult('error');
       setMessage('Post content cannot be empty.');
       setTimeout(clearResult, 4000);
-      return;
+      return false;
     }
 
     const accessToken = linkedinData?.accessToken;
@@ -59,7 +59,7 @@ export function useLinkedInPost(): UseLinkedInPostResult {
           : 'LinkedIn is not connected. Go to Social Platforms or Integrations tab to connect first.'
       );
       setTimeout(clearResult, 5000);
-      return;
+      return false;
     }
 
     setIsPosting(true);
@@ -70,7 +70,6 @@ export function useLinkedInPost(): UseLinkedInPostResult {
       let res: Response;
 
       if (image) {
-        // Send as FormData for image upload
         const formData = new FormData();
         formData.append('accessToken', accessToken);
         formData.append('content', content);
@@ -80,7 +79,6 @@ export function useLinkedInPost(): UseLinkedInPostResult {
           body: formData,
         });
       } else {
-        // Text-only: send as JSON
         res = await fetch('/api/linkedin-post', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -92,12 +90,15 @@ export function useLinkedInPost(): UseLinkedInPostResult {
       if (!res.ok) throw new Error(data.error || 'Posting failed');
       setResult('success');
       setMessage(data.message || 'Post published to LinkedIn!');
+      setTimeout(clearResult, 6000);
+      return true;
     } catch (e: unknown) {
       setResult('error');
       setMessage(e instanceof Error ? e.message : 'Something went wrong');
+      setTimeout(clearResult, 6000);
+      return false;
     } finally {
       setIsPosting(false);
-      setTimeout(clearResult, 6000);
     }
   };
 
