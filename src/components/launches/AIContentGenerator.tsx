@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './AIContentGenerator.module.scss';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
@@ -42,7 +43,7 @@ const TABS = [
 
 type TabKey = typeof TABS[number]['key'];
 
-const OLLAMA_URL = process.env.NEXT_PUBLIC_OLLAMA_URL || 'http://localhost:11434';
+
 
 function buildPrompt(f: FormData): string {
   return `You are AutoLaunch AI — a content generation engine. Generate a complete multi-platform content package from the details below.
@@ -87,19 +88,6 @@ Return ONLY valid JSON (no markdown, no code fences) matching this exact structu
 }`;
 }
 
-function parseResponse(raw: string): GeneratedPackage | null {
-  try {
-    // Strip any accidental markdown fences
-    const cleaned = raw.replace(/```json|```/g, '').trim();
-    const start = cleaned.indexOf('{');
-    const end = cleaned.lastIndexOf('}');
-    if (start === -1 || end === -1) return null;
-    return JSON.parse(cleaned.slice(start, end + 1));
-  } catch {
-    return null;
-  }
-}
-
 function CopyBox({ text, label }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false);
   const copy = () => {
@@ -121,6 +109,7 @@ function CopyBox({ text, label }: { text: string; label?: string }) {
 }
 
 export default function AIContentGenerator({ isOpen, onClose, onUseContent }: AIContentGeneratorProps) {
+  const router = useRouter();
   const [form, setForm] = useState<FormData>({
     feature_name: '',
     description: '',
@@ -145,23 +134,21 @@ export default function AIContentGenerator({ isOpen, onClose, onUseContent }: AI
     setError('');
     setResult(null);
     try {
-      const res = await fetch(`${OLLAMA_URL}/api/generate`, {
+      const res = await fetch('/api/content-generator', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'llama3.2',
-          prompt: buildPrompt(form),
-          stream: false,
-        }),
+        body: JSON.stringify({ prompt: buildPrompt(form) }),
       });
-      if (!res.ok) throw new Error(`Ollama returned ${res.status}`);
-      const data = await res.json();
-      const parsed = parseResponse(data.response || '');
-      if (!parsed) throw new Error('Could not parse AI response. Try again.');
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || `Server returned ${res.status}`);
+      }
+      const parsed = await res.json() as GeneratedPackage;
+      if (!parsed?.linkedin) throw new Error('Could not parse AI response. Try again.');
       setResult(parsed);
       setActiveTab('linkedin');
     } catch (err: any) {
-      setError(`${err.message}. Make sure Ollama is running with llama3.2.`);
+      setError(err.message);
     } finally {
       setIsGenerating(false);
     }
@@ -172,6 +159,11 @@ export default function AIContentGenerator({ isOpen, onClose, onUseContent }: AI
     setResult(null);
     setError('');
     onClose();
+  };
+
+  const handleGenerateImage = (prompt: string) => {
+    handleClose();
+    router.push(`/media?imagePrompt=${encodeURIComponent(prompt)}`);
   };
 
   return (
@@ -305,9 +297,24 @@ export default function AIContentGenerator({ isOpen, onClose, onUseContent }: AI
               )}
               {activeTab === 'imagePrompts' && (
                 <>
-                  <CopyBox label="Square 1:1 (1080×1080)" text={result.imagePrompts.square} />
-                  <CopyBox label="Story 9:16 (1080×1920)" text={result.imagePrompts.story} />
-                  <CopyBox label="Landscape 16:9 (1920×1080)" text={result.imagePrompts.landscape} />
+                  <div className={styles.imagePromptRow}>
+                    <CopyBox label="Square 1:1 (1080×1080)" text={result.imagePrompts.square} />
+                    <Button variant="ai" size="sm" className={styles.genImgBtn} onClick={() => handleGenerateImage(result.imagePrompts.square)}>
+                      🎨 Generate Image
+                    </Button>
+                  </div>
+                  <div className={styles.imagePromptRow}>
+                    <CopyBox label="Story 9:16 (1080×1920)" text={result.imagePrompts.story} />
+                    <Button variant="ai" size="sm" className={styles.genImgBtn} onClick={() => handleGenerateImage(result.imagePrompts.story)}>
+                      🎨 Generate Image
+                    </Button>
+                  </div>
+                  <div className={styles.imagePromptRow}>
+                    <CopyBox label="Landscape 16:9 (1920×1080)" text={result.imagePrompts.landscape} />
+                    <Button variant="ai" size="sm" className={styles.genImgBtn} onClick={() => handleGenerateImage(result.imagePrompts.landscape)}>
+                      🎨 Generate Image
+                    </Button>
+                  </div>
                 </>
               )}
               {activeTab === 'videoScript' && (

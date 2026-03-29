@@ -1,5 +1,6 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import styles from './media.module.scss';
 
 interface MediaItem {
@@ -12,12 +13,13 @@ interface MediaItem {
 }
 
 const MOCK_MEDIA: MediaItem[] = [
-  { id: '1', name: 'product-launch.jpg', type: 'image', size: '2.4 MB', date: '2026-03-10' },
-  { id: '2', name: 'team-photo.png', type: 'image', size: '1.8 MB', date: '2026-03-08' },
-  { id: '3', name: 'promo-video.mp4', type: 'video', size: '24.5 MB', date: '2026-03-05' },
-  { id: '4', name: 'banner-ad.jpg', type: 'image', size: '890 KB', date: '2026-03-01' },
-  { id: '5', name: 'logo-white.svg', type: 'image', size: '12 KB', date: '2026-02-28' },
-  { id: '6', name: 'tutorial.mp4', type: 'video', size: '48.2 MB', date: '2026-02-25' },
+  { id: '1', name: 'Centralize_Every_Interaction.png', type: 'image', size: '2.4 MB', date: '2026-03-10', preview: '/Centralize_Every_Interaction_version_1 (1) (1).png' },
+  { id: '2', name: 'From_Concept_to_Code-Ready_v1.png', type: 'image', size: '1.8 MB', date: '2026-03-10', preview: '/From_Concept_to_Code-Ready_version_1 (1) (1).png' },
+  { id: '3', name: 'From_Concept_to_Code-Ready_v2.png', type: 'image', size: '1.6 MB', date: '2026-03-10', preview: '/From_Concept_to_Code-Ready_version_1 (2).png' },
+  { id: '4', name: 'Sustain_your_ecosystem.png', type: 'image', size: '2.1 MB', date: '2026-03-10', preview: '/Sustain_your_ecosystem__version_1 (1) (1).png' },
+  { id: '5', name: 'large.png', type: 'image', size: '3.2 MB', date: '2026-03-08', preview: '/large.png' },
+  { id: '6', name: 'April_Hackathon.mp4', type: 'video', size: '24.5 MB', date: '2026-03-01', preview: '/Your_April_Hackathon_Starts_Now_version_1 (1).mp4' },
+  { id: '7', name: 'motion2Fast_dashboard.mp4', type: 'video', size: '48.2 MB', date: '2026-02-28', preview: '/motion2Fast_Animate_this_modern_SaaS_dashboard_UI_where_a_user_0.mp4' },
 ];
 
 function formatBytes(bytes: number) {
@@ -26,12 +28,123 @@ function formatBytes(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+const OLLAMA_URL = process.env.NEXT_PUBLIC_OLLAMA_URL || 'http://localhost:11434';
+
+function ImageGenModal({
+  prompt,
+  onClose,
+  onGenerated,
+}: {
+  prompt: string;
+  onClose: () => void;
+  onGenerated: (item: MediaItem) => void;
+}) {
+  const [editedPrompt, setEditedPrompt] = useState(prompt);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState('');
+  const [previewUrl, setPreviewUrl] = useState('');
+
+  const handleGenerate = async () => {
+    setIsGenerating(true);
+    setError('');
+    setPreviewUrl('');
+    try {
+      const res = await fetch(`${OLLAMA_URL}/api/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'llava',
+          prompt: `Generate an image based on this description: ${editedPrompt}`,
+          stream: false,
+        }),
+      });
+      if (!res.ok) throw new Error(`Model returned ${res.status}`);
+      const data = await res.json();
+      // Ollama image models return base64 in images array
+      const b64 = data.images?.[0] || data.response;
+      if (!b64) throw new Error('No image returned');
+      const url = `data:image/png;base64,${b64}`;
+      setPreviewUrl(url);
+    } catch (err: any) {
+      setError(`${err.message}. Make sure Ollama is running with an image model.`);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleSave = () => {
+    if (!previewUrl) return;
+    onGenerated({
+      id: `gen-${Date.now()}`,
+      name: `ai-generated-${Date.now()}.png`,
+      type: 'image',
+      size: 'AI Generated',
+      date: new Date().toISOString().split('T')[0],
+      preview: previewUrl,
+    });
+  };
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
+          <span className={styles.modalTitle}>🎨 Generate Image from Prompt</span>
+          <button className={styles.modalClose} onClick={onClose} aria-label="Close">✕</button>
+        </div>
+        <div className={styles.modalBody}>
+          <label className={styles.promptLabel}>Prompt</label>
+          <textarea
+            className={styles.promptInput}
+            value={editedPrompt}
+            onChange={(e) => setEditedPrompt(e.target.value)}
+            rows={4}
+          />
+          {error && <div className={styles.genError}>{error}</div>}
+          {previewUrl && (
+            <div className={styles.previewWrap}>
+              <img src={previewUrl} alt="Generated" className={styles.generatedImg} />
+            </div>
+          )}
+        </div>
+        <div className={styles.modalFooter}>
+          <button className={styles.cancelBtn} onClick={onClose}>Cancel</button>
+          {previewUrl && (
+            <button className={styles.saveBtn} onClick={handleSave}>Save to Library</button>
+          )}
+          <button
+            className={styles.generateBtn}
+            onClick={handleGenerate}
+            disabled={isGenerating || !editedPrompt.trim()}
+          >
+            {isGenerating ? '⏳ Generating...' : '✨ Generate'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function MediaComponent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [media, setMedia] = useState<MediaItem[]>(MOCK_MEDIA);
   const [filter, setFilter] = useState<'all' | 'image' | 'video'>('all');
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [toast, setToast] = useState('');
+  const [imagePrompt, setImagePrompt] = useState('');
+  const [showImageGen, setShowImageGen] = useState(false);
+  const [previewItem, setPreviewItem] = useState<MediaItem | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const prompt = searchParams.get('imagePrompt');
+    if (prompt) {
+      setImagePrompt(decodeURIComponent(prompt));
+      setShowImageGen(true);
+      // Clean the URL without reload
+      router.replace('/media');
+    }
+  }, [searchParams, router]);
 
   const filtered = media.filter((m) => filter === 'all' || m.type === filter);
 
@@ -59,6 +172,53 @@ export function MediaComponent() {
   return (
     <div className={styles.page}>
       {toast && <div className={styles.toast}>{toast}</div>}
+
+      {/* Lightbox Preview */}
+      {previewItem && (
+        <div className={styles.lightboxOverlay} onClick={() => setPreviewItem(null)}>
+          <div className={styles.lightbox} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.lightboxHeader}>
+              <span className={styles.lightboxName}>{previewItem.name}</span>
+              <div className={styles.lightboxActions}>
+                {previewItem.preview && (
+                  <a href={previewItem.preview} download={previewItem.name} className={styles.downloadBtn}>
+                    ↓ Download
+                  </a>
+                )}
+                <button className={styles.lightboxClose} onClick={() => setPreviewItem(null)} aria-label="Close">✕</button>
+              </div>
+            </div>
+            <div className={styles.lightboxBody}>
+              {previewItem.preview ? (
+                previewItem.type === 'video' ? (
+                  <video src={previewItem.preview} controls autoPlay className={styles.lightboxMedia} />
+                ) : (
+                  <img src={previewItem.preview} alt={previewItem.name} className={styles.lightboxMedia} />
+                )
+              ) : (
+                <div className={styles.lightboxNoPreview}>No preview available</div>
+              )}
+            </div>
+            <div className={styles.lightboxFooter}>
+              <span>{previewItem.size}</span>
+              <span>{previewItem.date}</span>
+              <span className={styles.typeBadge} data-type={previewItem.type}>{previewItem.type}</span>
+            </div>
+          </div>
+        </div>
+      )}
+      {showImageGen && (
+        <ImageGenModal
+          prompt={imagePrompt}
+          onClose={() => setShowImageGen(false)}
+          onGenerated={(item) => {
+            setMedia((prev) => [item, ...prev]);
+            setShowImageGen(false);
+            setToast('Image generated and added to media library');
+            setTimeout(() => setToast(''), 3000);
+          }}
+        />
+      )}
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           {(['all', 'image', 'video'] as const).map((f) => (
@@ -87,6 +247,7 @@ export function MediaComponent() {
             </button>
           </div>
               <input
+                ref={inputRef}
                 type="file"
                 multiple
                 accept="image/*,video/*"
@@ -115,9 +276,13 @@ export function MediaComponent() {
           <div className={styles.grid}>
             {filtered.map((item) => (
               <div key={item.id} className={styles.gridItem}>
-                <div className={styles.thumbnail}>
+                <div className={styles.thumbnail} onClick={() => setPreviewItem(item)} style={{ cursor: 'pointer' }}>
                   {item.preview ? (
-                    <img src={item.preview} alt={item.name} className={styles.previewImg} />
+                    item.type === 'video' ? (
+                      <video src={item.preview} className={styles.previewImg} muted playsInline />
+                    ) : (
+                      <img src={item.preview} alt={item.name} className={styles.previewImg} />
+                    )
                   ) : item.type === 'video' ? (
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none">
                       <path d="M15 10L19.5528 7.72361C20.2177 7.39116 21 7.87465 21 8.61803V15.382C21 16.1253 20.2177 16.6088 19.5528 16.2764L15 14M5 18H13C14.1046 18 15 17.1046 15 16V8C15 6.89543 14.1046 6 13 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -141,7 +306,7 @@ export function MediaComponent() {
             <thead><tr><th>Name</th><th>Type</th><th>Size</th><th>Date</th><th></th></tr></thead>
             <tbody>
               {filtered.map((item) => (
-                <tr key={item.id}>
+                <tr key={item.id} onClick={() => setPreviewItem(item)} style={{ cursor: 'pointer' }}>
                   <td>{item.name}</td>
                   <td><span className={styles.typeBadge} data-type={item.type}>{item.type}</span></td>
                   <td>{item.size}</td>

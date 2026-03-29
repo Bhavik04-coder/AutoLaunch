@@ -201,6 +201,16 @@
   margin-top: 0.25rem;
 }
 
+.imagePromptRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.genImgBtn {
+  align-self: flex-start;
+}
+
 .loadingState {
   display: flex;
   flex-direction: column;
