@@ -43,7 +43,7 @@ AutoLaunch is a **full-stack social media management platform** that lets you sc
 
 <img src="https://raw.githubusercontent.com/Bhavik04-coder/AutoLaunch/main/public/web6.png" alt="Dashboard" width="100%" style="border-radius:10px; margin-bottom:10px;" />
 
-<img src="https://raw.githubusercontent.com/Bhavik04-coder/AutoLaunch/main/public/web2.png" alt="Post Scheduling" width="100%" style="border-radius:10px; margin-bottom:10px;" />
+<img src="https://raw.githubusercontent.com/Bhavik04-coder/AutoLaunch/main/public/web1.png" alt="Post Scheduling" width="100%" style="border-radius:10px; margin-bottom:10px;" />
 
 <img src="https://raw.githubusercontent.com/Bhavik04-coder/AutoLaunch/main/public/web3.png" alt="AI Agents" width="100%" style="border-radius:10px; margin-bottom:10px;" />
 
@@ -51,7 +51,7 @@ AutoLaunch is a **full-stack social media management platform** that lets you sc
 
 <img src="https://raw.githubusercontent.com/Bhavik04-coder/AutoLaunch/main/public/web5.png" alt="Media Library" width="100%" style="border-radius:10px; margin-bottom:10px;" />
 
-<img src="https://raw.githubusercontent.com/Bhavik04-coder/AutoLaunch/main/public/web1.png" alt="Integrations" width="100%" style="border-radius:10px;" />
+<img src="https://raw.githubusercontent.com/Bhavik04-coder/AutoLaunch/main/public/web2.png" alt="Integrations" width="100%" style="border-radius:10px;" />
 
 </div>
 
