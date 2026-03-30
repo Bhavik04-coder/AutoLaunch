@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/large.png" alt="AutoLaunch Banner" width="100%" style="border-radius:12px;" />
+<img src="public/large.png" alt="AutoLaunch Logo" width="180px" />
 
 <br/>
 
@@ -41,11 +41,17 @@ AutoLaunch is a **full-stack social media management platform** that lets you sc
 
 <div align="center">
 
-<img src="public/From_Concept_to_Code-Ready_version_1 (1) (1).png" alt="From Concept to Code" width="100%" style="border-radius:10px; margin-bottom:12px;" />
+<img src="public/web1.png" alt="Dashboard" width="100%" style="border-radius:10px; margin-bottom:10px;" />
 
-<img src="public/Centralize_Every_Interaction_version_1 (1) (1).png" alt="Centralize Every Interaction" width="100%" style="border-radius:10px; margin-bottom:12px;" />
+<img src="public/web2.png" alt="Post Scheduling" width="100%" style="border-radius:10px; margin-bottom:10px;" />
 
-<img src="public/Sustain_your_ecosystem__version_1 (1) (1).png" alt="Sustain Your Ecosystem" width="100%" style="border-radius:10px;" />
+<img src="public/web3.png" alt="AI Agents" width="100%" style="border-radius:10px; margin-bottom:10px;" />
+
+<img src="public/web4.png" alt="Analytics" width="100%" style="border-radius:10px; margin-bottom:10px;" />
+
+<img src="public/web5.png" alt="Media Library" width="100%" style="border-radius:10px; margin-bottom:10px;" />
+
+<img src="public/web6.png" alt="Integrations" width="100%" style="border-radius:10px;" />
 
 </div>
 
